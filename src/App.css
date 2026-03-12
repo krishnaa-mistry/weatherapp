@@ -1,38 +1,293 @@
+/* ═══════════════════════════════════════════
+   App.css  —  Nimbus Weather App
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Lora:wght@600&display=swap');
+
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  min-height: 100vh;
+  transition: background 0.5s ease, color 0.4s ease;
+
+  /* Light mode — rich sky gradient */
+  background: linear-gradient(
+    180deg,
+    #1e6dd5 0%,
+    #4facfe 20%,
+    #70cffc 50%,
+    #c8eeff 80%,
+    #f0faff 100%
+  );
+  background-attachment: fixed;
+}
+
+/* Dark mode — deep night sky */
+body[data-theme="dark"] {
+  background: linear-gradient(
+    145deg,
+    #0d1f42 0%,
+    #162d5a 30%,
+    #1a3568 55%,
+    #112246 80%,
+    #0d1f42 100%
+  );
+  background-attachment: fixed;
+  color: #e2e8f0;
+}
+
+/* Subtle fixed noise grain for depth */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.022;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px;
+}
+
+/* Ensure content sits above grain */
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── App shell ── */
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* ── Global card style ── */
+.card {
+  background: rgba(255, 255, 255, 0.68) !important;
+  border: 1px solid rgba(180, 210, 255, 0.5) !important;
+  border-radius: 22px !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 40px rgba(100, 160, 255, 0.12) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body[data-theme="dark"] .card {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4) !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 50px rgba(100, 160, 255, 0.2) !important;
+}
+
+body[data-theme="dark"] .card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ── Weather stack (main page layout) ── */
+.weather-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
 }
 
-.App-link {
-  color: #61dafb;
+/* ── Weather container ── */
+.weather-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  gap: 1.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.current-weather-card,
+.forecast-container {
+  width: 100%;
+  max-width: 520px;
+}
+
+.forecast-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* ── Hourly forecast card ── */
+.hourly-forecast-card {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hourly-forecast-card .hour-item {
+  width: 100px;
+  padding: 14px 8px;
+}
+
+/* ── Icon grid ── */
+.icon-grid {
+  height: 100%;
+}
+
+/* ── Phone card (compact layout) ── */
+.phone-card {
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+/* ── Container padding ── */
+.container {
+  padding-bottom: 5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(100, 160, 255, 0.25);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 160, 255, 0.45);
+}
+
+/* ── Selection highlight ── */
+::selection {
+  background: rgba(56, 189, 248, 0.28);
+  color: inherit;
+}
+
+/* ── Utility animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-up { animation: fadeUp 0.5s ease both; }
+.animate-fade-in { animation: fadeIn 0.4s ease both; }
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .weather-stack {
+    padding: 1.25rem 0.75rem 3rem;
+    gap: 1rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .hourly-forecast-card .hour-item {
+    width: 80px;
+    padding: 10px 4px;
   }
+}
+
+/* ── Mobile bottom navigation ────────────────────────────── */
+.mobile-bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom));
+  background: rgba(10, 25, 60, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(100,160,255,0.2);
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.3);
+  justify-content: space-around;
+  align-items: center;
+}
+
+body[data-theme="light"] .mobile-bottom-nav {
+  background: rgba(255,255,255,0.92);
+  border-top: 1px solid rgba(180,210,255,0.5);
+  box-shadow: 0 -4px 24px rgba(100,160,255,0.15);
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-decoration: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 12px;
+  transition: background 0.15s;
+  flex: 1;
+  max-width: 80px;
+}
+
+.mobile-nav-item:active {
+  background: rgba(56,189,248,0.15);
+}
+
+.mobile-nav-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.mobile-nav-label {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.04em;
+}
+
+body[data-theme="light"] .mobile-nav-label {
+  color: rgba(15,39,68,0.5);
+}
+
+.mobile-nav-item.active .mobile-nav-label {
+  color: #38bdf8;
+}
+
+body[data-theme="light"] .mobile-nav-item.active .mobile-nav-label {
+  color: #0369a1;
+}
+
+.mobile-nav-item.active .mobile-nav-icon {
+  filter: drop-shadow(0 0 6px rgba(56,189,248,0.6));
+}
+
+@media (max-width: 768px) {
+  .mobile-bottom-nav { display: flex; }
+  /* Push content up so it's not hidden behind bottom nav */
+  body { padding-bottom: 70px; }
+  /* Hide top navbar links on mobile */
+  .nb-nav-links { display: none !important; }
 }

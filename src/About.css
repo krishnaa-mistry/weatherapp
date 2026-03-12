@@ -1,0 +1,188 @@
+/* ═══════════════════════════════════════════
+   About.css  —  Nimbus Weather App
+   ═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Lora:wght@600&display=swap');
+
+/* ── Main container ── */
+.about-container {
+  max-width: 780px;
+  margin: 3rem auto;
+  padding: 2.75rem 2.5rem;
+  font-family: 'Sora', 'Segoe UI', sans-serif;
+  color: var(--text-primary, #0f2744);
+
+  background: var(--surface, rgba(255, 255, 255, 0.68));
+  border: 1px solid var(--surface-border, rgba(180, 210, 255, 0.55));
+  border-radius: 28px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 60px var(--shadow-color, rgba(100, 160, 255, 0.14));
+
+  animation: aboutSlideUp 0.55s ease both;
+}
+
+@keyframes aboutSlideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Headings ── */
+.about-container h1 {
+  font-family: 'Lora', serif;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.025em;
+  color: var(--text-primary, #0f2744);
+
+  /* Gradient text */
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Accent underline beneath h1 */
+.about-container h1::after {
+  content: "";
+  display: block;
+  width: 56px;
+  height: 3px;
+  margin-top: 0.6rem;
+  border-radius: 99px;
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+}
+
+.about-container h3 {
+  font-family: 'Lora', serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 2rem 0 0.85rem;
+  color: var(--text-primary, #0f2744);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Small vertical bar accent left of h3 */
+.about-container h3::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 1.1em;
+  border-radius: 99px;
+  background: linear-gradient(180deg, #38bdf8, #818cf8);
+  flex-shrink: 0;
+}
+
+/* ── Body text ── */
+.about-container p {
+  font-size: 0.97rem;
+  line-height: 1.8;
+  color: var(--text-secondary, rgba(15, 39, 68, 0.72));
+  margin-bottom: 0.85rem;
+}
+
+.about-container strong {
+  color: var(--accent-blue, #0369a1);
+  font-weight: 600;
+}
+
+.about-container em {
+  font-style: italic;
+  color: var(--text-secondary, rgba(15, 39, 68, 0.65));
+}
+
+/* ── Feature list ── */
+.about-container ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.about-container li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-secondary, rgba(15, 39, 68, 0.75));
+
+  background: rgba(56, 189, 248, 0.05);
+  border: 1px solid rgba(56, 189, 248, 0.12);
+
+  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-container li:hover {
+  background: rgba(56, 189, 248, 0.10);
+  border-color: rgba(56, 189, 248, 0.25);
+  transform: translateX(4px);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.1);
+}
+
+/* Remove old bullet, use gradient dot instead */
+.about-container li::before {
+  content: "";
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #38bdf8, #818cf8);
+  flex-shrink: 0;
+  margin-top: 0.42em;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.5);
+}
+
+.about-container li strong {
+  color: var(--accent-blue, #0369a1);
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+/* ── Dark mode overrides ── */
+body[data-theme="dark"] .about-container {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+body[data-theme="dark"] .about-container p,
+body[data-theme="dark"] .about-container em {
+  color: rgba(200, 220, 255, 0.65);
+}
+
+body[data-theme="dark"] .about-container li {
+  background: rgba(56, 189, 248, 0.04);
+  border-color: rgba(56, 189, 248, 0.10);
+  color: rgba(200, 220, 255, 0.68);
+}
+
+body[data-theme="dark"] .about-container li:hover {
+  background: rgba(56, 189, 248, 0.10);
+  border-color: rgba(56, 189, 248, 0.22);
+}
+
+body[data-theme="dark"] .about-container li strong,
+body[data-theme="dark"] .about-container strong {
+  color: #7dd3fc;
+}
+
+body[data-theme="dark"] .about-container h3 {
+  color: #e0efff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .about-container {
+    margin: 1.5rem 1rem;
+    padding: 1.75rem 1.25rem;
+    border-radius: 20px;
+  }
+}
