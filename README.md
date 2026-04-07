@@ -11,7 +11,7 @@ https://weatherapp-eta-navy.vercel.app/
 - HTML
 - CSS
 - JavaScript
-- Weather API
+- Weather API  
 
 ## Features
 - City Search — Search real-time weather data for any city across the globe
